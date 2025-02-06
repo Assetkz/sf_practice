@@ -1,0 +1,23 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-18.04"
+  config.vm.boot_timeout = 300
+
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update 
+    sudo apt-get install -y python3 python3-pip
+    pip3 install psycopg2 django
+  SHELL
+
+  config.vm.hostname = "Ubuntu18-10-HW-03"
+  config.vm.provision "file", source: "dev_script.py", destination: "/home/vagrant/shared/dev_script.py"
+  config.vm.synced_folder "./shared", "/home/vagrant/shared"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Ubuntu18-vm"
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+
+  
+
+end
